@@ -25,6 +25,7 @@ class MarvelService { // Мы не прописали extends Component пото
 
     _transformCharacter = (char) => { // Мы будем получать какие то данные и уже возвращать трансформированный объект
         return {
+            id: char.id,
             name: char.name,
             description: char.description ? `${char.description.slice(0, 210)}...` : 'There is no description for this character',
             thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension, // Тут у нас все сложнее потому что это свойство в данных состоит из двух полей 1. ссылка 2. расширение. Поэтому тут мы будем складывать строки
