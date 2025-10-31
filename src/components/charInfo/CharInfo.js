@@ -24,7 +24,9 @@ class CharInfo extends Component {
         if(this.props.charId !== prevProps.charId) {
             this.updateChar();
         }
-    }
+    };
+
+    
 
     updateChar = () => { // Метод для обновления компонента. Обновлять мы его будем потому что он тоже +- динамический
         const {charId} = this.props;
