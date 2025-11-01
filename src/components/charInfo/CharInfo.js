@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import './charInfo.scss';
 import MarvelService from '../../services/MarvelService';
@@ -128,6 +129,10 @@ const View = ({char}) => {
             </ul>
         </>
     )
+};
+
+CharInfo.propTypes = {
+    charId: PropTypes.string // Так мы проверям то, что в это свойство будет приходить именно числовой тип
 }
 
 export default CharInfo;
