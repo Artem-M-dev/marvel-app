@@ -2,6 +2,8 @@
 class MarvelService { // Мы не прописали extends Component потому что этот класс будет написан на чистом JavaScript 
     _apiBase = 'https://marvel-server-zeta.vercel.app/';
     _apiKey = 'apikey=d4eecb0c66dedbfae4eab45d312fc1df';
+    _baseOffset = 0;
+    _baseLimit = 9;
 
     getResource = async (url) => {
         let res = await fetch(url);
@@ -13,8 +15,8 @@ class MarvelService { // Мы не прописали extends Component пото
         return await res.json();
     }
 
-    getAllCharacters = async () => {
-        const res = await this.getResource(`${this._apiBase}characters?limit=9&${this._apiKey}`);
+    getAllCharacters = async (offset = this._baseOffset) => {
+        const res = await this.getResource(`${this._apiBase}characters?offset=${offset}&limit=${this._baseLimit}&${this._apiKey}`);
         return res.data.results.map(this._transformCharacter);
     }
 
