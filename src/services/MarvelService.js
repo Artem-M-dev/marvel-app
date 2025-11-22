@@ -1,31 +1,26 @@
+import { useHttp } from "../hooks/http.hook";
 
-class MarvelService { // Мы не прописали extends Component потому что этот класс будет написан на чистом JavaScript 
-    _apiBase = 'https://marvel-server-zeta.vercel.app/';
-    _apiKey = 'apikey=d4eecb0c66dedbfae4eab45d312fc1df';
-    _baseOffset = 0;
-    _baseLimit = 9;
+const useMarvelService = () => { // Мы не прописали extends Component потому что этот класс будет написан на чистом JavaScript 
+    // Нам нужно вытащить все самое нужное из useHttp
+    const {loading, error, request, clearError} = useHttp()
 
-    getResource = async (url) => {
-        let res = await fetch(url);
 
-        if(!res.ok) {
-            throw new Error(`Could not fetch ${url}, status ${res.status}`);
-        }
+    const _apiBase = 'https://marvel-server-zeta.vercel.app/';
+    const _apiKey = 'apikey=d4eecb0c66dedbfae4eab45d312fc1df';
+    const _baseOffset = 0;
+    const _baseLimit = 9;
 
-        return await res.json();
+    const getAllCharacters = async (offset = _baseOffset) => {
+        const res = await request(`${_apiBase}characters?offset=${offset}&limit=${_baseLimit}&${_apiKey}`);
+        return res.data.results.map(_transformCharacter);
     }
 
-    getAllCharacters = async (offset = this._baseOffset) => {
-        const res = await this.getResource(`${this._apiBase}characters?offset=${offset}&limit=${this._baseLimit}&${this._apiKey}`);
-        return res.data.results.map(this._transformCharacter);
+    const getCharacter = async (id) => {
+        const res = await request(`${_apiBase}characters/${id}?${_apiKey}`);
+        return _transformCharacter(res.data.results[0])
     }
 
-    getCharacter = async (id) => {
-        const res = await this.getResource(`${this._apiBase}characters/${id}?${this._apiKey}`);
-        return this._transformCharacter(res.data.results[0])
-    }
-
-    _transformCharacter = (char) => { // Мы будем получать какие то данные и уже возвращать трансформированный объект
+    const _transformCharacter = (char) => { // Мы будем получать какие то данные и уже возвращать трансформированный объект
         return {
             id: char.id,
             name: char.name,
@@ -35,7 +30,9 @@ class MarvelService { // Мы не прописали extends Component пото
             wiki: char.urls[1].url,
             comics: char.comics.items
         }
-    }
+    };
+
+    return {loading, error, clearError, getAllCharacters, getCharacter}
 }
 
-export default MarvelService
+export default useMarvelService
