@@ -32,7 +32,29 @@ const useMarvelService = () => { // Мы не прописали extends Compone
         }
     };
 
-    return {loading, error, clearError, getAllCharacters, getCharacter}
+    const getAllComics = async (offset = _baseOffset) => {
+        const res = await request(`${_apiBase}comics?offset=${offset}&limit=8&${_apiKey}`)
+        return res.data.results.map(_transformComic)
+    };
+
+    const _transformComic = (comic) => {
+        return {
+            id: comic.id,
+            title: comic.title,
+            description: comic.description ? `${comic.description.slice(0, 210)}...` : 'There is no description for this comic',
+            thumbnail: comic.thumbnail.path + '.' + comic.thumbnail.extension,
+            prices: comic.prices[0].price
+        }
+    }
+
+    return {
+            loading,
+            error,
+            clearError,
+            getAllCharacters,
+            getCharacter,
+            getAllComics,
+        }
 }
 
 export default useMarvelService
