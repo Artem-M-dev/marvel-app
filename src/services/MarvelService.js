@@ -37,13 +37,21 @@ const useMarvelService = () => { // Мы не прописали extends Compone
         return res.data.results.map(_transformComic)
     };
 
+    const getComics = async (id) => {
+        const res = await request(`${_apiBase}comics/${id}?${_apiKey}`);
+        return _transformComic(res.data.results[0]);
+        
+    }
+
     const _transformComic = (comic) => {
         return {
             id: comic.id,
             title: comic.title,
             description: comic.description ? `${comic.description.slice(0, 210)}...` : 'There is no description for this comic',
             thumbnail: comic.thumbnail.path + '.' + comic.thumbnail.extension,
-            prices: comic.prices[0].price
+            prices: comic.prices[0].price,
+            pageCount: comic.pageCount,
+            textObjects: comic.textObjects.languages
         }
     }
 
@@ -54,6 +62,7 @@ const useMarvelService = () => { // Мы не прописали extends Compone
             getAllCharacters,
             getCharacter,
             getAllComics,
+            getComics
         }
 }
 

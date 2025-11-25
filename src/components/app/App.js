@@ -4,6 +4,8 @@ import AppHeader from "../appHeader/AppHeader";
 
 import MainPage from "../pages/MainPage";
 import ComicsPage from "../pages/ComicsPage";
+import Page404 from '../pages/404';
+import SingleComicPage from '../pages/SingleComicPage';
 
 const App = () => {
 
@@ -13,8 +15,10 @@ const App = () => {
                 <AppHeader/>
                 <main>
                     <Routes>
-                        <Route path="/" element={<MainPage/>}/>
                         <Route path="/comics" element={<ComicsPage/>}/>
+                        <Route path="/" element={<MainPage/>}/>
+                        <Route path="*" element={<Page404/>}/>
+                        <Route path="/comics/:comicId" element={<SingleComicPage/>}/>
                     </Routes>
                 </main>
             </div>
