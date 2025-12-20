@@ -26,10 +26,9 @@ const CharList = (props) => {
         initial ? setNewItemLoading(false) : setNewItemLoading(true);
         getAllCharacters(offset)
             .then(onCharListLoaded)
-    }
+    };
 
-    const onCharListLoaded = (newCharList) => {
-        let ended = false;
+    const onCharListLoaded = (newCharList) => {let ended = false;
         if (newCharList.length < 9) {
             ended = true;
         }
